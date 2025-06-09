@@ -26,8 +26,7 @@ int lamp = 14;
 int remoteMonitor = 0;
 int remotePotValue = 0;
 
-int stateMonitor = 0;       // 0 = hanya LDR, 1 = semua sensor
-int lastRemoteMonitor = 0;  // untuk deteksi rising edge
+int stateMonitor = 0; // 0 = hanya LDR, 1 = semua sensor
 
 bool obstacleDetected = false;
 
@@ -135,6 +134,7 @@ void loop() {
 
 }
 
+// fungsi kirim ke mqtt
 void sendToMqtt(){
 
   String dht_str = String(data);
@@ -165,6 +165,7 @@ void readSerial(){
         sendToMqtt();
     }
 
+      // aktifkan jika ingin memantau di serial
       // Serial.print("Monitor: "); 
       // Serial.print(remoteMonitor);
       // Serial.print(" | PotValue: "); 
@@ -177,14 +178,14 @@ void readSerial(){
 }
 
 void reconnect() {
-  // Loop sampai berhasil reconnect
+  // Loop sampai reconnect kembali
   while (!client.connected()) {
     Serial.print("Attempting MQTT connection...");
     String clientId = "ESP8266Client-";
     clientId += String(random(0xffff), HEX);
     if (client.connect(clientId.c_str(), mqtt_username, mqtt_password)) {
       Serial.println("connected");
-      // Subscribe ulang ke semua topic kamu
+      // Subscribe ulang semua 
       client.subscribe(topic_suhu_temp);
       client.subscribe(topic_ping);
       client.subscribe(topic_ldr);
@@ -231,6 +232,8 @@ void sensorSuhu() {
   data = suhu + "," + lembab;
 
   float hic = dht.computeHeatIndex(t, h, false);
+
+  // aktifkan jika ingin memantau di serial
   // Serial.print(F("Temperature: "));
   // Serial.print(t);
   // Serial.print(F("°C "));
@@ -257,14 +260,13 @@ void sensorPing() {
     digitalWrite(buzzer, HIGH);
     if (!obstacleDetected) {
       Serial.println("auto");
-      // obstacleDetected = true; // Agar tidak spam kirim
     }
   } else {
     digitalWrite(buzzer, LOW);
     Serial.println("autono");
     obstacleDetected = false;
   }
-
+  // aktifkan jika ingin memantau di serial
   // Serial.print("Distance :");
   // Serial.println(distance);
   delay(100);
@@ -273,6 +275,8 @@ void sensorPing() {
 void sensorLDR(){
 
   ldrValue = analogRead(ldrPin);
+
+  // aktifkan jika ingin memantau di serial
   // Serial.print("ldr : ");
   // Serial.print(ldrValue);
   // Serial.print("\n");
