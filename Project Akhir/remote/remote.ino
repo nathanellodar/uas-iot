@@ -1,7 +1,8 @@
 #include <ESP8266WiFi.h>
 #include <espnow.h>
 
-uint8_t mac_slave[] = {0xDC, 0x4F, 0x22, 0x05, 0xDF, 0xB6}; // MAC slave
+// MAC slave
+uint8_t mac_slave[] = {0xDC, 0x4F, 0x22, 0x05, 0xDF, 0xB6}; 
 
 // Pin Button
 int btnMaju = 5;
