@@ -9,6 +9,7 @@ int relay2 = 12;
 // Servo Pin
 Servo myServo;  
 
+// state untuk belok
 bool stateBelok = false;
 String stateNow;
 
@@ -84,6 +85,8 @@ void receiveRemoteMessageRemote(){
 void testServo(){
   int valueServo = map(payload.potValue, 0, 1023, 0, 180);
   myServo.write(valueServo);
+
+  // aktifkan jika ingin memantau di serial
   // Serial.print("value servo : ");
   // Serial.print(valueServo);
   // Serial.print("\n");
@@ -103,20 +106,18 @@ void receiveBelok(){
       Serial.println("woii");
       stateBelok = true;
 
-      // belokKanan();
     } else if(stateNow == "autono") {
       stateBelok = false;
       // aksi autono di sini
       digitalWrite(relay1, HIGH);
-      digitalWrite(relay2, HIGH); // STOP
+      digitalWrite(relay2, HIGH); 
+      // STOP
     }
   }
 }
 
-
+// fungsi belok kanan
 void belokKanan(){
   digitalWrite(relay1, LOW);
   digitalWrite(relay2, HIGH);  
 }
-
-
